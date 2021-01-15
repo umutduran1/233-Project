@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+<div class="row" style="text-align:center;">
+    <div class="col-md-2 col-sm-2">
+      </div>
+  <div class="col-md-8 col-sm-8">
+    <h3 class="text-dark">{{title}}</h3><br>
+    <div class="card">
+        <div class="card-body">
+    <form  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+    {{ form.media }}
+    <input class="btn btn-primary" type="submit" name="button" value="Oluştur"></input>
+    </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2 col-sm-2">
+    </div>
+</div>
+</div>
+
+{% endblock %}

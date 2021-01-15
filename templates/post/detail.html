@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+       <div class="row">
+<div class="col-md-12">
+    <h1>{{ post.title }}</h1>
+    <img src="{{ post.img.url }}" class="img-fluid" alt="{{post.title}}"><br>
+    <br>
+    <p><img src="{% static 'img/like.png' %}" width="18" class="img-fluid" alt=""> {{ post.like }}&nbsp;&nbsp;&nbsp;<img src="{% static 'img/comment.png' %}" width="18" class="img-fluid" alt=""> {{ post.comment }} </p>
+    <div class="card">
+        <div class="card-body">
+            
+            {{ post.content|safe }}
+            {% if request.user.is_authenticated %}
+                            
+            <form action="" method="POST">
+                                    {% csrf_token %}
+                                <p class="text-right">
+                                    <span class="post-meta-date">
+                                        {% if like %}
+                                   <button class="btn btn-info btn-sm" name='like' >Beğen</button>
+                                        {% else %}
+                                        <button class="btn btn-info btn-sm" name='like' >Beğenmekten Vazgeç</button>
+                                        {% endif %}
+                                    </span>
+                                </p>
+                            </form>
+                                {% endif %}
+            </div> <!-- Card -->
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+        <h1>Yorumlar</h1>
+
+            {% if request.user.is_authenticated %}
+            <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                {{ form.media }}
+
+                <button class="btn btn-primary btn-sm" name="btnComment" type="submit">Yorum Yap</button>
+            </form>
+           
+            {% endif %}
+            <hr>
+            <div class="comment-widgets">
+
+                {% for c in comm %}
+                <div class="d-flex flex-row comment-row m-t-0">
+                    <div class="p-2"><img src="{% static 'img/user.png' %}" alt="user" width="50" class="rounded-circle"></div>
+                    <div class="comment-text w-100">
+                        <h6 class="font-medium">{{ c.user.first_name }} {{ c.user.last_name }}</h6> <span class="m-b-15 d-block">{{ c.comment|safe }}</span>
+                        <div class="comment-footer"> <span class="text-muted float-right">{{ c.date }}</span>{% if request.user == c.user %}
+                            <form method="POST">
+                                {% csrf_token %}
+                                <button type="submit" name="btn{{ c.id }}" class="btn btn-danger btn-sm">Sil</button>
+                            </form>
+                            
+                            {% endif %}</div>
+                    </div>
+                </div> 
+             <hr>
+                {% endfor %}
+            </div> <!-- Card -->
+        </div>
+
+
+    </div>
+</div>
+           
+       </div>
+{% endblock %}

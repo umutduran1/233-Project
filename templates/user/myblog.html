@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<p>Hoşgeldin, {{ request.user.get_full_name }}</p>
+<hr>
+<div class="row">
+    <div class="col-6">
+        <h4>{{ posts_value }} yazı</h4>
+    </div>
+    <div class="col-6 text-right">
+        <a href="{% url 'post-create' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Yeni Oluştur</a>
+    </div>
+    <br><br>
+</div>
+
+<div class="card">
+  <div class="card-body">
+
+  
+       <div class="row">
+         {% if posts %}
+               {% for x in posts %}
+           <div class="col-md-4">
+            <div class="card">
+                <a href="{% url 'post-detail' x.id %}">
+                <img class="card-img-top img-fluid" width="350" height="350" src="{{ x.img.url }}" alt="{{ x.title }}">
+            </a>
+                <div class="card-body">
+                  <h5 class="card-title">{{ x.title }}</h5>
+    <p><img src="{% static 'img/like.png' %}" width="18" class="img-fluid" alt=""> {{ x.like }}&nbsp;&nbsp;&nbsp;<img src="{% static 'img/comment.png' %}" width="18" class="img-fluid" alt=""> {{ x.comment }} </p>
+                  <p class="card-text">{{ x.content|safe|truncatechars:60 }}</p>
+                  
+                  <form method="POST">
+                    {% csrf_token %}
+                    <a href="{% url 'post-detail' x.id %}" class="btn btn-primary">Devamını oku</a>
+                  <a href="{% url 'post-update' x.id %}" class="btn btn-success">Düzenle</a>
+                  <button type="submit" name="btn{{ x.id }}" class="btn btn-danger">Sil</button>
+                </form>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">{{ x.date|timesince }}, önce</small>
+                </div>
+
+              </div><br>
+           </div>
+
+
+              {% endfor %}
+              {% else %}
+              <div class="text-center">
+                <p>Yazı yok...</p>
+              </div>
+              {% endif %}
+           
+       </div>
+      </div>
+    </div>
+{% endblock %}

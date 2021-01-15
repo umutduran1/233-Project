@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="card">
+  <div class="card-body">
+
+  
+       <div class="row">
+         {% if posts %}
+               {% for x in posts %}
+           <div class="col-md-4">
+            <div class="card">
+                <a href="{% url 'post-detail' x.id %}">
+                <img class="card-img-top img-fluid" width="350" height="350" src="{{ x.img.url }}" alt="{{ x.title }}">
+            </a>
+                <div class="card-body">
+                  <h5 class="card-title">{{ x.title }}</h5>
+                  <p><img src="{% static 'img/like.png' %}" width="18" class="img-fluid" alt=""> {{ x.like }}&nbsp;&nbsp;&nbsp;<img src="{% static 'img/comment.png' %}" width="18" class="img-fluid" alt=""> {{ x.comment }} </p>
+                  <p class="card-text">{{ x.content|safe|truncatechars:60 }}</p>
+                  <a href="{% url 'post-detail' x.id %}" class="btn btn-primary">Devamını oku</a>
+                 
+                </div>
+                <div class="card-footer">
+            <img src="{% static 'img/user.png' %}" style="border-radius: 50%; width:35px; height:35px; vertical-align: middle;" alt="">&nbsp;{{ x.user.first_name }} {{ x.user.last_name }}
+
+                  <small class="text-muted">{{ x.date|timesince }}, önce</small>
+                </div>
+
+              </div><br>
+           </div>
+              {% endfor %}
+              {% else %}
+              <div class="text-center">
+                <p>Yazı yok...</p>
+              </div>
+              {% endif %}
+           
+       </div>
+      </div>
+    </div>
+{% endblock %}

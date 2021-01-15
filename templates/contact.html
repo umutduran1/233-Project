@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="card">
+  <div class="card-body">
+
+
+    <div class="row" style="text-align:center;">
+        <div class="col-md-2 col-sm-2">
+          </div>
+            <div class="col-md-8 col-sm-8">
+                <h3 class="text-dark">{{title}}</h3><br>
+                {% if sending %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  Mesajınız iletildi.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                      {% endif %}
+                <div class="card">
+                    <div class="card-body">
+                <form  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                {{ form.media }}
+                <input class="btn btn-primary" type="submit" name="button" value="Gönder"></input>
+                </form>
+                </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-2">
+          </div>
+    </div>
+
+  
+      </div> 
+    </div>
+{% endblock %}
